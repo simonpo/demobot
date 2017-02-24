@@ -4,14 +4,15 @@ var builder = require('botbuilder');
 
 // Setup Restify Server
 var server = restify.createServer();
-server.listen(process.env.port || process.env.PORT || 3978, function () {
+server.listen(process.env.PORT || 3000, function() 
+{
    console.log('%s listening to %s', server.name, server.url); 
 });
 
 // Create chat bot
 var connector = new builder.ChatConnector
-var appId = process.env.MY_APP_ID;
-var appPassword = process.env.MY_APP_SECRET;
+// var appId = process.env.MY_APP_ID;
+// var appPassword = process.env.MY_APP_SECRET;
 var bot = new builder.UniversalBot(connector);
 server.post('/api/messages', connector.listen());
 
