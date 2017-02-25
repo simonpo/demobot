@@ -26,6 +26,17 @@ var dialog = new builder.IntentDialog({ recognizers: [recognizer] });
 bot.dialog('/', dialog);
 dialog.matches('FormalGreeting', builder.DialogAction.send('A very formal Hello to you too'));
 dialog.matches('InformalGreeting', builder.DialogAction.send('Howdy!'));
+dialog.matches('GetLyrics', [
+    function (session, args, next) {
+        var songtitle = builder.EntityRecognizer.findEntity(args.entities, 'SearchTopic');
+        console.log('Song title to search for is %s', songtitle);
+        if (!songtitle) {
+            builder.Prompts.text(session, "What song would you like the lyrics for?");
+        } else {
+        session.send("You want me to search for something %s", songtitle);
+        }
+    }
+]);
 dialog.matches('Search', [
     function (session, args, next) {
         var searchtopic = 'DikMik' // builder.EntityRecognizer.findEntity(args.entities, 'SearchTopic');
