@@ -48,6 +48,8 @@ dialog.matches('Search', [
         }
     }
 ]);
+dialog.matches('Help', builder.DialogAction.send("I don't have a lot to do at the moment. Try asking me something like what are the words to your favourite Hawkwind song, or dates of a gig."));
+dialog.matches('AboutTheBot', builder.DialogAction.send("Well, hi there. I'm glad you asked. I'm just a chat bot, built by Simon Powell to answer questions about Hawkwind"));
 dialog.onDefault(builder.DialogAction.send("I'm sorry I didn't understand. I don't know a lot yet."));
 
 
