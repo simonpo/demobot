@@ -17,6 +17,10 @@ var connector = new builder.ChatConnector({
 var bot = new builder.UniversalBot(connector);
 server.post('/api/messages', connector.listen());
 
+// Add global LUIS recognizer to bot
+var model = process.env.model;
+bot.recognizer(new builder.LuisRecognizer(model));
+
 // Create bot dialogs
 bot.dialog('/', function (session) {
     session.send("Hello Everybody");
