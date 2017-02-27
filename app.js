@@ -9,6 +9,9 @@ server.listen(process.env.PORT || 3000, function()
    console.log('%s listening to %s', server.name, server.url); 
 });
 
+// var msg = "This is "+ process.env.NODE_ENV + " environment";
+// console.log(msg);
+
 // Create chat bot
 var connector = new builder.ChatConnector({
     appId: process.env.MY_APP_ID,
@@ -24,14 +27,13 @@ var dialog = new builder.IntentDialog({ recognizers: [recognizer] });
 
 // Create bot dialogs
 bot.dialog('/', dialog);
-dialog.matches('FormalGreeting', builder.DialogAction.send('A very formal Hello to you too'));
+dialog.matches('FormalGreeting', builder.DialogAction.send('Hello.'));
 dialog.matches('InformalGreeting', builder.DialogAction.send('Howdy!'));
 dialog.matches('GetLyrics', [
     function (session, args, next) {
-        var songtitle = 'A Song Title' // builder.EntityRecognizer.findEntity(args.entities, 'SearchTopic');
-        console.log('Song title to search for is %s', songtitle);
+        var songtitle = builder.EntityRecognizer.findEntity(args.entities, '*');
         if (!songtitle) {
-            builder.Prompts.text(session, "What song would you like the lyrics for?");
+            builder.Prompts.text(session, "What song would you like the lyrics for?", songtitle);
         } else {
         session.send("You want me to search for the lyrics to %s", songtitle);
         }
