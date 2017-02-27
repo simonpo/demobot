@@ -60,5 +60,4 @@ dialog.onDefault(builder.DialogAction.send("I'm sorry I didn't understand. I don
 server.get('/', restify.serveStatic({
  directory: __dirname,
  default: '/index.html',
- terms: '/tou.html'
 }));
