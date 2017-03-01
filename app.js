@@ -1,6 +1,7 @@
 // Add your requirements
 var restify = require('restify'); 
 var builder = require('botbuilder'); 
+const util = require('util');
 
 // Setup Restify Server
 var server = restify.createServer();
@@ -21,39 +22,42 @@ var bot = new builder.UniversalBot(connector);
 server.post('/api/messages', connector.listen());
 
 // Add  LUIS recognizer
-var luisModel = process.env.LUIS_MODEL
+var luisModel = process.env.LUIS_MODEL;
 var recognizer = new builder.LuisRecognizer(luisModel);
-var dialog = new builder.IntentDialog({ recognizers: [recognizer] });
+var intents = new builder.IntentDialog({ recognizers: [recognizer] });
 
 // Create bot dialogs
-bot.dialog('/', dialog);
-dialog.matches('FormalGreeting', builder.DialogAction.send('Hello.'));
-dialog.matches('InformalGreeting', builder.DialogAction.send('Howdy!'));
-dialog.matches('GetLyrics', [
-    function (session, args) {
-        var songtitle = builder.EntityRecognizer.findEntity(args.entities, 'GetLyrics');
+bot.dialog('/', intents);
+intents.matches('FormalGreeting', builder.DialogAction.send('Hello.'));
+intents.matches('InformalGreeting', builder.DialogAction.send('Howdy!'));
+intents.matches('GetLyrics', [
+    function (session, args, next) {
+        // sometimes it's helpful to see what LUIS returned
+        console.log(util.inspect(args, false, null));
+        var songtitle = builder.EntityRecognizer.findEntity(args.entities, 'SearchTopic');
         if (!songtitle) {
-            builder.Prompts.text(session, "What song would you like the lyrics for?", songtitle);
+            builder.Prompts.text(session, "Sorry, I didn't catch the title. What song would you like the lyrics for?", songtitle);
         } else {
-        session.send("You want me to search for the lyrics to %s", songtitle);
-        }
+            session.send("You want me to how you the lyrics to %s", songtitle.entity);
+            }
     }
 ]);
-dialog.matches('Search', [
+intents.matches('Search', [
     function (session, args, next) {
-        var searchtopic = 'DikMik' // builder.EntityRecognizer.findEntity(args.entities, 'SearchTopic');
-        console.log('Search topic was %s', searchtopic);
+        // sometimes it's helpful to see what LUIS returned
+        console.log(util.inspect(args, false, null));
+        var searchtopic = builder.EntityRecognizer.findEntity(args.entities, 'SearchTopic');
         if (!searchtopic) {
             builder.Prompts.text(session, "What would you like to search for?");
         } else {
-        session.send("You want me to search for something %s", searchtopic);
+        session.send("You want me to search the web for information on: %s", searchtopic.entity);
         }
     }
 ]);
-dialog.matches('StatusCheck', builder.DialogAction.send("Navigation Computer report:\n Orbital status now maintained. Target zone vectors logged in. The Tube is now ready. Please swallow your Blue Dreamer, and place the helmet on your head"));
-dialog.matches('Help', builder.DialogAction.send("I don't have a lot to do at the moment. Try asking me something like what are the words to your favourite Hawkwind song, or dates of a gig."));
-dialog.matches('AboutTheBot', builder.DialogAction.send("Well, hi there. I'm glad you asked. I'm just a chat bot, built by Simon Powell to answer questions about Hawkwind"));
-dialog.onDefault(builder.DialogAction.send("I'm sorry I didn't understand. I don't know a lot yet."));
+intents.matches('StatusCheck', builder.DialogAction.send("Navigation Computer report:\n Orbital status now maintained. Target zone vectors logged in. The Tube is now ready. Please swallow your Blue Dreamer, and place the helmet on your head"));
+intents.matches('Help', builder.DialogAction.send("I don't have a lot to do at the moment. Try asking me something like what are the words to your favourite Hawkwind song, or dates of a gig."));
+intents.matches('AboutTheBot', builder.DialogAction.send("Well, hi there. I'm glad you asked. I'm just a chat bot, built by Simon Powell to answer questions about Hawkwind"));
+intents.onDefault(builder.DialogAction.send("I'm sorry I didn't understand. I don't know a lot yet."));
 
 
 // web interface
