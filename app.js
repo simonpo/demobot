@@ -21,8 +21,8 @@ var bot = new builder.UniversalBot(connector);
 server.post('/api/messages', connector.listen());
 
 // Add  LUIS recognizer
-var model = process.env.model
-var recognizer = new builder.LuisRecognizer(model);
+var luisModel = process.env.LUIS_MODEL
+var recognizer = new builder.LuisRecognizer(luisModel);
 var dialog = new builder.IntentDialog({ recognizers: [recognizer] });
 
 // Create bot dialogs
@@ -30,8 +30,8 @@ bot.dialog('/', dialog);
 dialog.matches('FormalGreeting', builder.DialogAction.send('Hello.'));
 dialog.matches('InformalGreeting', builder.DialogAction.send('Howdy!'));
 dialog.matches('GetLyrics', [
-    function (session, args, next) {
-        var songtitle = builder.EntityRecognizer.findEntity(args.entities, '*');
+    function (session, args) {
+        var songtitle = builder.EntityRecognizer.findEntity(args.entities, 'GetLyrics');
         if (!songtitle) {
             builder.Prompts.text(session, "What song would you like the lyrics for?", songtitle);
         } else {
