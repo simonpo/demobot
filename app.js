@@ -2,6 +2,8 @@
 var restify = require('restify'); 
 var builder = require('botbuilder'); 
 const util = require('util');
+var discogs = require('disconnect').Client;
+var analyrics = require('analyrics');
 
 // Setup Restify Server
 var server = restify.createServer();
@@ -31,6 +33,24 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] });
 bot.dialog('/', intents);
 intents.matches('FormalGreeting', builder.DialogAction.send('Hello.'));
 intents.matches('InformalGreeting', builder.DialogAction.send('Howdy!'));
+// Get the tracks on a specific release from Discogs
+intents.matches('GetTracks', [
+    function (session, args, next) {
+        // sometimes it's helpful to see what LUIS returned
+        console.log(util.inspect(args, false, null));
+        var tracklisting = builder.EntityRecognizer.findEntity(args.entities, 'SearchTopic');
+        if (!tracklisting) {
+            builder.Prompts.text(session, "Sorry, I didn't catch the title of the disk you want. What would you like the tracklisting for?", tracklisting);
+        } else {
+            session.send("You want me to show the tracks on %s", tracklisting.entity);
+            var db = new discogs().database();
+            db.getArtist(69719, function(err, data){
+                console.log(data);
+                });
+            }
+    }
+]);
+// Get lyrics for a specified song using https://www.npmjs.com/package/analyrics
 intents.matches('GetLyrics', [
     function (session, args, next) {
         // sometimes it's helpful to see what LUIS returned
@@ -38,12 +58,22 @@ intents.matches('GetLyrics', [
         var songtitle = builder.EntityRecognizer.findEntity(args.entities, 'SearchTopic');
         if (!songtitle) {
             builder.Prompts.text(session, "Sorry, I didn't catch the title. What song would you like the lyrics for?", songtitle);
+            session.send("You want me to show the lyrics to %s", songtitle);
         } else {
             session.send("You want me to show the lyrics to %s", songtitle.entity);
-            
-
-
-            }
+            analyrics.getSong(songtitle.entity, function(song) {
+                session.sendTyping();
+                console.log(song.title);
+                // console.log(song.artist);
+                // console.log(song.url);
+                console.log(song.lyrics);
+                // console.log(song.frequency);
+                // console.log(song.sentiment);
+                session.send(song.title + " by " + song.artist);
+                session.send(song.lyrics);
+                session.send(song.url);
+            });
+        }
     }
 ]);
 intents.matches('GetTweets', [

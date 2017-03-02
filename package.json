@@ -20,7 +20,9 @@
   },
   "homepage": "https://github.com/simonpo/demobot#readme",
   "dependencies": {
+    "analyrics": "^1.1.3",
     "botbuilder": "^3.7.0",
+    "disconnect": "^1.1.0",
     "dtrace-provider": "^0.8.0",
     "https": "^1.0.0",
     "restify": "^4.3.0"
