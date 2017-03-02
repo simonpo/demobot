@@ -3,7 +3,7 @@ var restify = require('restify');
 var builder = require('botbuilder'); 
 const util = require('util');
 var discogs = require('disconnect').Client;
-var analyrics = require('analyrics');
+// var analyrics = require('analyrics');
 
 // Setup Restify Server
 var server = restify.createServer();
