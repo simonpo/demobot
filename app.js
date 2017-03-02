@@ -1,4 +1,4 @@
-// Add your requirements
+// Requirements
 var restify = require('restify'); 
 var builder = require('botbuilder'); 
 const util = require('util');
@@ -22,7 +22,8 @@ var bot = new builder.UniversalBot(connector);
 server.post('/api/messages', connector.listen());
 
 // Add  LUIS recognizer
-var luisModel = process.env.LUIS_MODEL;
+// var luisModel = process.env.LUIS_MODEL;
+var luisModel = "https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/13ad7c41-604a-45fb-9ac4-e8baf8addc89?subscription-key=aa00dbafeb704fb89151b8dcbe47d6e7&verbose=true";
 var recognizer = new builder.LuisRecognizer(luisModel);
 var intents = new builder.IntentDialog({ recognizers: [recognizer] });
 
@@ -38,8 +39,16 @@ intents.matches('GetLyrics', [
         if (!songtitle) {
             builder.Prompts.text(session, "Sorry, I didn't catch the title. What song would you like the lyrics for?", songtitle);
         } else {
-            session.send("You want me to how you the lyrics to %s", songtitle.entity);
+            session.send("You want me to show the lyrics to %s", songtitle.entity);
+            
+
+
             }
+    }
+]);
+intents.matches('GetTweets', [
+    function(session, args, next) {
+        session.send("Looking for tweets")
     }
 ]);
 intents.matches('Search', [
@@ -55,8 +64,8 @@ intents.matches('Search', [
     }
 ]);
 intents.matches('StatusCheck', builder.DialogAction.send("Navigation Computer report:\n Orbital status now maintained. Target zone vectors logged in. The Tube is now ready. Please swallow your Blue Dreamer, and place the helmet on your head"));
-intents.matches('Help', builder.DialogAction.send("I don't have a lot to do at the moment. Try asking me something like what are the words to your favourite Hawkwind song, or dates of a gig."));
-intents.matches('AboutTheBot', builder.DialogAction.send("Well, hi there. I'm glad you asked. I'm just a chat bot, built by Simon Powell to answer questions about Hawkwind"));
+intents.matches('Help', builder.DialogAction.send("I don't have a lot to do at the moment. Try asking me for the lyrics of your favourite Hawkwind song, or info about band members."));
+intents.matches('AboutTheBot', builder.DialogAction.send("Well, hi there. I'm glad you asked. I'm a chat bot, built by Simon Powell to answer questions about Hawkwind. Hopefully I'll get smarter in the future."));
 intents.onDefault(builder.DialogAction.send("I'm sorry I didn't understand. I don't know a lot yet."));
 
 
