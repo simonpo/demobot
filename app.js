@@ -35,7 +35,7 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] });
 
 // Create bot dialogs
 bot.dialog('/', intents);
-intents.matches('FormalGreeting', builder.DialogAction.send('Hello.'));
+intents.matches('FormalGreeting', builder.DialogAction.send('Hello.' + hostname ));
 intents.matches('InformalGreeting', builder.DialogAction.send('Howdy!'));
 // Get the tracks on a specific release from Discogs
 intents.matches('GetTracks', [
