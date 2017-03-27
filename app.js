@@ -13,7 +13,7 @@ server.listen(process.env.PORT || 3000, function()
 });
 
 // what server am i on?
-var hostname = require('os').hostname;
+var hostname = require('os').hostname();
 console.log ( hostname );
 
 // var msg = "This is "+ process.env.NODE_ENV + " environment";
