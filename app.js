@@ -11,9 +11,10 @@ var server = restify.createServer();
 server.listen(process.env.PORT || 3000, function()
 {
    console.log('%s listening to %s', server.name, server.url); 
-   console.log('net.Server.address() === ' + require('util').inspect(server.server.address())); 
-   console.log('os hostname: %s', os.hostname());
+   // console.log('net.Server.address() === ' + require('util').inspect(server.server.address())); 
+   // console.log('os hostname: %s', os.hostname());
    console.log('process.env: %s', process.env.WEBSITE_HOSTNAME);
+   // show me everything in process.env - there's some sensitive info in here, of course. Never expose to prod. 
    console.log(util.inspect(process.env, false, null));
 });
 
@@ -102,7 +103,7 @@ intents.matches('Search', [
 ]);
 intents.matches('StatusCheck', builder.DialogAction.send("Navigation Computer report:\n Orbital status now maintained. Target zone vectors logged in. The Tube is now ready. Please swallow your Blue Dreamer, and place the helmet on your head"));
 intents.matches('Help', builder.DialogAction.send("I don't have a lot to do at the moment. Try asking me for the lyrics of your favourite Hawkwind song, or info about band members."));
-intents.matches('AboutTheBot', builder.DialogAction.send("Well, hi there. I'm glad you asked. I'm a chat bot, built by Simon Powell to answer questions. Hopefully I'll get smarter in the future. My server is " + require('util').inspect(server.server.address()) ));
+intents.matches('AboutTheBot', builder.DialogAction.send("Well, hi there. I'm glad you asked. I'm a chat bot, built by Simon Powell to answer questions. Hopefully I'll get smarter in the future. My server is " + process.env.WEBSITE_HOSTNAME ));
 intents.onDefault(builder.DialogAction.send("I'm sorry I didn't understand. I don't know a lot yet."));
 
 // web interface
