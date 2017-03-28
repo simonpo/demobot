@@ -14,6 +14,7 @@ server.listen(process.env.PORT || 3000, function()
    console.log('net.Server.address() === ' + require('util').inspect(server.server.address())); 
    console.log('os hostname: %s', os.hostname());
    console.log('process.env: %s', process.env.WEBSITE_HOSTNAME);
+   console.log(util.inspect(process.env, false, null));
 });
 
 require('dns').lookup(require('os').hostname(), function (err, add, fam) {
