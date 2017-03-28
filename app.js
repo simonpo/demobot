@@ -6,6 +6,14 @@ var discogs = require('disconnect').Client;
 var os = require('os');
 // var analyrics = require('analyrics');
 
+// see if we know the hostname
+if ( process.env.WEBSITE_HOSTNAME ) {
+    hostname = process.env.WEBSITE_HOSTNAME;
+}
+else {
+    hostname = 'localhost';
+}
+
 // Setup Restify Server
 var server = restify.createServer();
 server.listen(process.env.PORT || 3000, function()
@@ -13,14 +21,11 @@ server.listen(process.env.PORT || 3000, function()
    console.log('%s listening to %s', server.name, server.url); 
    // console.log('net.Server.address() === ' + require('util').inspect(server.server.address())); 
    // console.log('os hostname: %s', os.hostname());
-   console.log('process.env: %s', process.env.WEBSITE_HOSTNAME);
+   // console.log('process.env: %s', process.env.WEBSITE_HOSTNAME);
    // show me everything in process.env - there's some sensitive info in here, of course. Never expose to prod. 
-   console.log(util.inspect(process.env, false, null));
+   // console.log(util.inspect(process.env, false, null));
+   console.log('My hostname is %s', hostname)
 });
-
-require('dns').lookup(require('os').hostname(), function (err, add, fam) {
-  console.log('addr: '+add);
-})
 
 // Create chat bot
 var connector = new builder.ChatConnector({
