@@ -4,6 +4,7 @@ var builder = require('botbuilder');
 const util = require('util');
 var discogs = require('disconnect').Client;
 var os = require('os');
+var http = require ('http');
 // var analyrics = require('analyrics');
 
 // Setup Restify Server
