@@ -13,6 +13,7 @@ server.listen(process.env.PORT || 3000, function()
    console.log('%s listening to %s', server.name, server.url); 
    console.log('net.Server.address() === ' + require('util').inspect(server.server.address())); 
    console.log('os hostname: %s', os.hostname());
+   console.log('process.env: %s', process.env.WEBSITE_HOSTNAME);
 });
 
 require('dns').lookup(require('os').hostname(), function (err, add, fam) {
