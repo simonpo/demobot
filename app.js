@@ -13,6 +13,8 @@ server.listen(process.env.PORT || 3000, function()
    console.log('%s listening to %s', server.name, server.url); 
 });
 
+var hostname2 = request.headers.hostname();
+
 // var msg = "This is "+ process.env.NODE_ENV + " environment";
 // console.log(msg);
 
@@ -96,7 +98,7 @@ intents.matches('Search', [
 ]);
 intents.matches('StatusCheck', builder.DialogAction.send("Navigation Computer report:\n Orbital status now maintained. Target zone vectors logged in. The Tube is now ready. Please swallow your Blue Dreamer, and place the helmet on your head"));
 intents.matches('Help', builder.DialogAction.send("I don't have a lot to do at the moment. Try asking me for the lyrics of your favourite Hawkwind song, or info about band members."));
-intents.matches('AboutTheBot', builder.DialogAction.send("Well, hi there. I'm glad you asked. I'm a chat bot, built by Simon Powell to answer questions. Hopefully I'll get smarter in the future. My server is " + os.hostname() ));
+intents.matches('AboutTheBot', builder.DialogAction.send("Well, hi there. I'm glad you asked. I'm a chat bot, built by Simon Powell to answer questions. Hopefully I'll get smarter in the future. My server is " + os.hostname() + " or maybe " + hostname2 ));
 intents.onDefault(builder.DialogAction.send("I'm sorry I didn't understand. I don't know a lot yet."));
 
 // web interface
