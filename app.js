@@ -10,7 +10,9 @@ var os = require('os');
 var server = restify.createServer();
 server.listen(process.env.PORT || 3000, function()
 {
-   console.log('%s listening to %s', server.name, server.url);
+   console.log('%s listening to %s', server.name, server.url); 
+   console.log('net.Server.address() === ' + require('util').inspect(server.server.address())); 
+   console.log('os hostname: %s', os.hostname());
 });
 
 // Create chat bot
