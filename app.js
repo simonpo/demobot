@@ -13,7 +13,8 @@ server.listen(process.env.PORT || 3000, function()
    console.log('%s listening to %s', server.name, server.url); 
 });
 
-var hostname2 = request.headers.hostname();
+var headers = request.headers;
+var hostname2 = headers['hostname'];
 
 // var msg = "This is "+ process.env.NODE_ENV + " environment";
 // console.log(msg);
