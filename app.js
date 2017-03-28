@@ -15,6 +15,9 @@ server.listen(process.env.PORT || 3000, function()
    console.log('os hostname: %s', os.hostname());
 });
 
+require('dns').lookup(require('os').hostname(), function (err, add, fam) {
+  console.log('addr: '+add);
+  
 // Create chat bot
 var connector = new builder.ChatConnector({
     appId: process.env.MY_APP_ID,
