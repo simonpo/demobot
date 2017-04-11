@@ -4,7 +4,7 @@ var builder = require('botbuilder');
 const util = require('util');
 var discogs = require('disconnect').Client;
 // var os = require('os');
-// var analyrics = require('analyrics');
+var analyrics = require('analyrics');
 
 // see if we know the hostname
 if ( process.env.WEBSITE_HOSTNAME ) {
