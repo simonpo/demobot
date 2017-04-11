@@ -4,7 +4,8 @@ var builder = require('botbuilder');
 const util = require('util');
 var discogs = require('disconnect').Client;
 // var os = require('os');
-var analyrics = require('analyrics');
+// analyrics requires a genius api key in a file in the config folder - figure out how to do this properly, no way I'm checking a key into github
+// var analyrics = require('analyrics');
 
 // see if we know the hostname
 if ( process.env.WEBSITE_HOSTNAME ) {
